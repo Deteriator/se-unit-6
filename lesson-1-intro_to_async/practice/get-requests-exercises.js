@@ -50,8 +50,17 @@ const response1 = `
  * response object.
  */
 
-const logUsers = null; //Replace null with your solution code to exercise 2
+const logUsers = (number = 10) => {
+	const getUsers = fetch(`https://randomuser.me/api/?results=${number}`);
 
+	return getUsers
+		.then(response => {
+			return response.json();
+		})
+		.then(data => {
+			return data.results;
+		});
+};
 /**
  * Exercise 3:
  *
@@ -74,48 +83,70 @@ const listTenNames = null; //Replace null with your solution code to exercise 3
  *
  */
 
-const createPhoneBook = null; //Replace null with your solution code to exercise 4
+async function createPhotoAlbum () {
+		try {
+		    const response = await fetch('https://randomuser.me/api/?results=25');
+		    const json = await response.json()
+		    const paintTable = await json.results.map(user =>{
+					const firstName = user.name.first;
+					const photoUrl = user.picture.medium;
+					return `
+                    <tr>
+                        <td>${firstName}</td>
+                        <td>
+                            <img src=${photoUrl} alt=${firstName}>
+                        </td>
+                    </tr>
+                `;
+				})
+				.join('');
 
-/**
- * Exercise 5:
- *
- * Create a function called `createPhotoAlbum` and invoke it.
- *
- * This function needs to:
- * 1) get 10 users who all identify as the same gender and same nationality
- * 2) display a simple html table with the users' names and photos
- * 3) give the table a title and ensure both rows have a label.
- *
- * You may choose the size of the photo to display. Styling the table is optional.
- *
- * NOTE: The random user api allows for parameters to be combined
- * using this format: `randomuser.me/api/?parameter1=value1&parameter2=value2`.
- * See the `Pagination` portion of the documentation to see an example query
- * with multiple parameters
- */
+			main.innerHTML = `
+            <h2>Photo Album</h2>
+            <table style="width:100%">
+            <tbody>
+              <tr>
+                <th>Name</th>
+                <th>Photo</th>
+              </tr>
+              ${paintTable}
+            </tbody>
+            </table>
+            `;
+		    }
 
-const createPhotoAlbum = null; //Replace null with your solution code to exercise 5
+        }catch (err) {
+    console.log('fetch failed', err);
+  }
 
-/**
- * For exercises 6-7, use the `Joke API` and
- * write your solutions using the async/await syntax
- *
- * TIPS:
- * 1) Read the documentation for the  `Joke API`:
- * https://sv443.net/jokeapi/v2#endpoints.
- *
- */
+createPhotoAlbum()
 
-/**
- * Exercise 6:
- * Create a function called `logAJoke`.
- *
- * This function needs to:
- * 1) get 1 joke that is about programming and is in a two-part format.
- * 2) log the setup and delivery of the joke on separate lines
- */
 
-const logAJoke = null; //Replace null with your solution code to exercise 6
+async function createPhotoAlbum () {
+		try {
+		    const response = await fetch('https://randomuser.me/api/?results=25');
+		    console.log(await response.text());
+		  }
+		catch{
+
+		}
+};
+
+
+const logAJoke = () => {
+
+		const getAJoke = fetch(
+			'https://sv443.net/jokeapi/v2/joke/Programming?type=twopart'
+		);
+		return getAJoke
+			.then(response => {
+				return response.json();
+			})
+			.then(joke =>{
+				console.log(`Setup: ${joke.setup}\nDelivery: ${joke.delivery}`);
+	});
+}
+
 
 /**
  * Exercise 7:
